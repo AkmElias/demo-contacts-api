@@ -8,3 +8,5 @@ const People = mongoose.model(
     height: Number,
   })
 );
+
+module.exports = People;
