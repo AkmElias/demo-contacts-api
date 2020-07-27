@@ -1,5 +1,6 @@
-const controller = require("../controllers/demo-contact.controller");
-const verifyDuplicateName = require("../validations/demo-contact-validatior");
+const apiController = require("../controllers/demo-contact.controller");
+const validators = require("../validations/demo-contact-validatior");
+const { body, validationResult } = require("express-validator");
 
 module.exports = function (app) {
   app.use((req, res, next) => {
@@ -10,5 +11,10 @@ module.exports = function (app) {
     next();
   });
 
-  app.post("/api/people", verifyDuplicateName, controller.people);
+  app.post("/api/people", validators.verifyDuplicateName, apiController.people);
+  app.post(
+    "/api/people/:id/contacts",
+    [body("email").isEmail()],
+    apiController.contacts
+  );
 };

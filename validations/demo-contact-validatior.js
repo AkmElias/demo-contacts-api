@@ -1,7 +1,8 @@
 const db = require("../models");
 const people = db.people;
+const contacts = db.contacts;
 
-module.exports = verifyDuplicateName = (req, res, next) => {
+verifyDuplicateName = (req, res, next) => {
   people
     .findOne({
       name: req.body.name,
@@ -18,3 +19,9 @@ module.exports = verifyDuplicateName = (req, res, next) => {
       next();
     });
 };
+
+const validators = {
+  verifyDuplicateName,
+};
+
+module.exports = validators;
