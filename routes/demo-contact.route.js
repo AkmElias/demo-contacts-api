@@ -11,10 +11,16 @@ module.exports = function (app) {
     next();
   });
 
+  //1st api
   app.post("/api/people", validators.verifyDuplicateName, apiController.people);
+
+  //2nd api
   app.post(
     "/api/people/:id/contacts",
-    [body("email").isEmail()],
+    body("email").isEmail(),
     apiController.contacts
   );
+
+  //3rd api for getting details of a specific people
+  app.get("/api/contacts", apiController.search);
 };

@@ -61,3 +61,35 @@ exports.contacts = (req, res) => {
     });
   });
 };
+
+exports.search = (req, res) => {
+  const name = req.query.name;
+  const details = {};
+  People.findOne({ name: name }, (err, people) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+    if (!people) {
+      res.status(404).send("People not found.");
+      return;
+    }
+    if (people) {
+      details.people = people;
+      details.contacts = "No contacts found.";
+      Contact.findOne({ people: details.people._id }, (err, contact) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+        if (!contact) {
+          res.status(200).send(details);
+        }
+        if (contact) {
+          details.contacts = contact;
+          res.status(200).send(details);
+        }
+      });
+    }
+  });
+};
